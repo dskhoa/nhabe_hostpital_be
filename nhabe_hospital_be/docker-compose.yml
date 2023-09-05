@@ -1,0 +1,21 @@
+version: "3.0"
+services:
+  postgres:
+    image: postgres:14-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: nhabe
+      POSTGRES_PASSWORD: hospital
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - ./database/migration.sql:/docker-entrypoint-initdb.d/migration.sql
+  nhabe_hospital_be:
+    image: nhabe_hospital_be:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/nhabe_hospital_be
